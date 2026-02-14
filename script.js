@@ -291,7 +291,7 @@ function drawText() {
     
     var startY = window.innerWidth < 600 ? canvas.height / 2 - 120 : canvas.height / 2 - 100;
     var framesPerLine = 80; // Each line takes 80 frames to fade in
-    var delayBetweenLines = 300;
+    var delayBetweenLines = 270;
 
     for (var i = 0; i < poemLines.length; i++) {
         var lineStartFrame = 3500 + (i * (framesPerLine + delayBetweenLines));
