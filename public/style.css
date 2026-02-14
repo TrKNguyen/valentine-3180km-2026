@@ -12,7 +12,6 @@ canvas {
 }
 
 #valentinesButton {
-    display: none;
     position: absolute;
     background-color: #2d2dff;
     border: 2px solid #2d2dff;

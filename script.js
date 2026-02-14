@@ -2,6 +2,10 @@ var canvas = document.getElementById("starfield");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+var music = document.getElementById("bgMusic");
+music.volume = 0.5; // Set volume
+music.play().catch(e => console.log("Autoplay blocked:", e));
+
 var context = canvas.getContext("2d");
 var stars = 500;
 var colorrange = [0, 60, 240];
@@ -48,27 +52,27 @@ function updateStars() {
     }
 }
 
-const button = document.getElementById("valentinesButton");
+// const button = document.getElementById("valentinesButton");
 
-button.addEventListener("click", () => {
-  if (button.textContent === "Nhấn Vào Đây! ❤") {
-    button.textContent = "Đang gửi...";
-    fetch('send_mail.php')
-      .then(response => {
-        if (response.ok) {
-          button.textContent = "Kiểm Tra Email Nhé 🙃";
-        } else {
-          console.error('Failed to send email');
-          button.textContent = "Lỗi 😞";
-        }
-      })
-      .catch(error => {
-        // Handle network errors or other issues
-        console.error('Error:', error);
-        button.textContent = "Lỗi 😞";
-      });
-  }
-});
+// button.addEventListener("click", () => {
+//   if (button.textContent === "Nhấn Vào Đây! ❤") {
+//     button.textContent = "Đang gửi...";
+//     fetch('send_mail.php')
+//       .then(response => {
+//         if (response.ok) {
+//           button.textContent = "Kiểm Tra Email Nhé 🙃";
+//         } else {
+//           console.error('Failed to send email');
+//           button.textContent = "Lỗi 😞";
+//         }
+//       })
+//       .catch(error => {
+//         // Handle network errors or other issues
+//         console.error('Error:', error);
+//         button.textContent = "Lỗi 😞";
+//       });
+//   }
+// });
 
 function drawTextWithLineBreaks(lines, x, y, fontSize, lineHeight) {
     lines.forEach((line, index) => {
@@ -89,17 +93,17 @@ function drawText() {
     context.shadowOffsetX = 0;
     context.shadowOffsetY = 0;
 
-    if(frameNumber < 250){
-        context.fillStyle = `rgba(255, 255, 255, ${opacity})`;
-        context.fillText("Mỗi ngày anh đều không thể tin được mình may mắn đến thế nào", canvas.width/2, canvas.height/2);
-        opacity = opacity + 0.01;
-    }
-    //fades out the text by decreasing the opacity
-    if(frameNumber >= 250 && frameNumber < 500){
-        context.fillStyle = `rgba(255, 255, 255, ${opacity})`;
-        context.fillText("Mỗi ngày anh đều không thể tin được mình may mắn đến thế nào", canvas.width/2, canvas.height/2);
-        opacity = opacity - 0.01;
-    }
+    // if(frameNumber < 250){
+    //     context.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+    //     context.fillText("Mỗi ngày anh đều không thể tin được mình may mắn đến thế nào", canvas.width/2, canvas.height/2);
+    //     opacity = opacity + 0.01;
+    // }
+    // //fades out the text by decreasing the opacity
+    // if(frameNumber >= 250 && frameNumber < 500){
+    //     context.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+    //     context.fillText("Mỗi ngày anh đều không thể tin được mình may mắn đến thế nào", canvas.width/2, canvas.height/2);
+    //     opacity = opacity - 0.01;
+    // }
 
     //needs this if statement to reset the opacity before next statement on canvas
     if(frameNumber == 500){
@@ -175,9 +179,9 @@ function drawText() {
         context.fillStyle = `rgba(255, 255, 255, ${opacity})`;
 
         if (window.innerWidth < 600) {
-            drawTextWithLineBreaks(["Và anh đã có cơ hội kỳ diệu", "để được hiểu em"], canvas.width / 2, canvas.height / 2, fontSize, lineHeight);
+            drawTextWithLineBreaks(["Và anh đã có cơ hội ", "để được hiểu em và yêu em"], canvas.width / 2, canvas.height / 2, fontSize, lineHeight);
         } else {
-            context.fillText("Và anh đã có cơ hội kỳ diệu để được hiểu em", canvas.width/2, canvas.height/2);
+            context.fillText("Và anh đã có cơ hội để được hiểu em và yêu em", canvas.width/2, canvas.height/2);
         }
 
         opacity = opacity + 0.01;
@@ -186,9 +190,9 @@ function drawText() {
         context.fillStyle = `rgba(255, 255, 255, ${opacity})`;
 
         if (window.innerWidth < 600) {
-            drawTextWithLineBreaks(["Và anh đã có cơ hội kỳ diệu", "để được hiểu em"], canvas.width / 2, canvas.height / 2, fontSize, lineHeight);
+            drawTextWithLineBreaks(["Và anh đã có cơ hội ", "để được hiểu em và yêu em"], canvas.width / 2, canvas.height / 2, fontSize, lineHeight);
         } else {
-            context.fillText("Và anh đã có cơ hội kỳ diệu để được hiểu em", canvas.width/2, canvas.height/2);
+            context.fillText("Và anh đã có cơ hội để được hiểu em và yêu em", canvas.width/2, canvas.height/2);
         }
         
         opacity = opacity - 0.01;
@@ -250,48 +254,53 @@ function drawText() {
         opacity = 0;
     }
     
-    // Vietnamese poem section
-    if(frameNumber > 3500 && frameNumber < 99999){
-        var poemFontSize = Math.min(26, window.innerWidth / 28);
-        context.font = poemFontSize + "px Comic Sans MS";
-        context.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+    // Vietnamese poem section - line by line animation
+    var poemFontSize = Math.min(26, window.innerWidth / 28);
+    var poemLineHeight = 10;
+    context.font = poemFontSize + "px Comic Sans MS";
+    
+    var poemLines = [
+        "Khoảng cách chỉ đo bằng cây số,",
+        "Chứ đâu đo được nhớ thương.",
+        "Dẫu xa cách muôn trùng phương,",
+        "Chốn anh về luôn là nơi em trông ngóng.",
+        "",
+        "Valentine này anh không ở cạnh,",
+        "Nhưng yêu thương thì chẳng hề vơi.",
+        "Tết này mình chung một bầu trời,",
+        "Anh sẽ bù cho em cả nghìn cái ôm còn thiếu."
+    ];
+    
+    var startY = window.innerWidth < 600 ? canvas.height / 2 - 120 : canvas.height / 2 - 100;
+    var framesPerLine = 80; // Each line takes 80 frames to fade in
+    var delayBetweenLines = 300;
 
-        if (window.innerWidth < 600) {
-            drawTextWithLineBreaks([
-                "Khoảng cách chỉ đo bằng cây số,",
-                "Chứ đâu đo được nhớ thương.",
-                "Dẫu xa cách muôn trùng phương,",
-                "Chốn anh về luôn là nơi em trông ngóng.",
-                "",
-                "Valentine này anh không ở cạnh,",
-                "Nhưng yêu thương thì chẳng hề vơi.",
-                "Tết này mình chung một bầu trời,",
-                "Anh sẽ bù cho em cả nghìn cái ôm còn thiếu."
-            ], canvas.width / 2, canvas.height / 2 - 120, poemFontSize, lineHeight);
-        } else {
-            drawTextWithLineBreaks([
-                "Khoảng cách chỉ đo bằng cây số,",
-                "Chứ đâu đo được nhớ thương.",
-                "Dẫu xa cách muôn trùng phương,",
-                "Chốn anh về luôn là nơi em trông ngóng.",
-                "",
-                "Valentine này anh không ở cạnh,",
-                "Nhưng yêu thương thì chẳng hề vơi.",
-                "Tết này mình chung một bầu trời,",
-                "Anh sẽ bù cho em cả nghìn cái ôm còn thiếu."
-            ], canvas.width / 2, canvas.height / 2 - 100, poemFontSize, lineHeight);
+    for (var i = 0; i < poemLines.length; i++) {
+        var lineStartFrame = 3500 + (i * (framesPerLine + delayBetweenLines));
+        var lineEndFrame = lineStartFrame + framesPerLine;
+        var lineOpacity = 0;
+        
+        if (frameNumber >= lineStartFrame && frameNumber < 99999) {
+            if (frameNumber < lineEndFrame) {
+                // Fading in
+                lineOpacity = (frameNumber - lineStartFrame) / framesPerLine;
+            } else {
+                // Fully visible
+                lineOpacity = 1;
+            }
+            
+            context.fillStyle = `rgba(255, 255, 255, ${lineOpacity})`;
+            context.fillText(poemLines[i], canvas.width / 2, startY + i * (poemFontSize + poemLineHeight));
         }
-
-        opacity = opacity + 0.005;
     }
 
-    // if(frameNumber >= 3750 && frameNumber < 99999){
+    // if(frameNumber >= 4300 && frameNumber < 99999){
     //     context.font = fontSize + "px Comic Sans MS";
     //     context.fillStyle = `rgba(255, 255, 255, ${secondOpacity})`;
     //     context.fillText("Chúc Mừng Ngày Valentine ❤", canvas.width/2, (canvas.height/2 + 160));
     //     secondOpacity = secondOpacity + 0.01;
 
-    //     if(frameNumber >= 3900){
+    //     if(frameNumber >= 4400){
     //         button.style.display = "block";
     //     }
     // }   
