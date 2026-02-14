@@ -1,10 +1,19 @@
 var canvas = document.getElementById("starfield");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
+var hasStarted = false; 
 
 var music = document.getElementById("bgMusic");
-music.volume = 0.5; // Set volume
-music.play().catch(e => console.log("Autoplay blocked:", e));
+music.volume = 0.5;
+
+// Add this:
+var startButton = document.getElementById("startButton");
+startButton.addEventListener("click", () => {
+    music.play();
+    frameNumber = 500;
+    hasStarted = true;
+    startButton.style.display = "none";
+});
 
 var context = canvas.getContext("2d");
 var stars = 500;
@@ -205,9 +214,9 @@ function drawText() {
         context.fillStyle = `rgba(255, 255, 255, ${opacity})`;
 
         if (window.innerWidth < 600) {
-            drawTextWithLineBreaks(["Anh yêu em rất nhiều Linh Bell,", "hơn cả không gian và thời gian"], canvas.width / 2, canvas.height / 2, fontSize, lineHeight);
+            drawTextWithLineBreaks(["Anh yêu em rất nhiều Linh Bell,", "vượt qua cả không gian và thời gian"], canvas.width / 2, canvas.height / 2, fontSize, lineHeight);
         } else {
-            context.fillText("Anh yêu em rất nhiều Linh Bell, hơn cả không gian và thời gian", canvas.width/2, canvas.height/2);
+            context.fillText("Anh yêu em rất nhiều Linh Bell, vượt qua cả không gian và thời gian", canvas.width/2, canvas.height/2);
         }
 
         opacity = opacity + 0.01;
@@ -216,9 +225,9 @@ function drawText() {
         context.fillStyle = `rgba(255, 255, 255, ${opacity})`;
 
         if (window.innerWidth < 600) {
-            drawTextWithLineBreaks(["Anh yêu em rất nhiều Linh Bell,", "hơn cả không gian và thời gian"], canvas.width / 2, canvas.height / 2, fontSize, lineHeight);
+            drawTextWithLineBreaks(["Anh yêu em rất nhiều Linh Bell,", "vượt qua cả không gian và thời gian"], canvas.width / 2, canvas.height / 2, fontSize, lineHeight);
         } else {
-            context.fillText("Anh yêu em rất nhiều Linh Bell, hơn cả không gian và thời gian", canvas.width/2, canvas.height/2);
+            context.fillText("Anh yêu em rất nhiều Linh Bell, vượt qua cả không gian và thời gian", canvas.width/2, canvas.height/2);
         }
 
         opacity = opacity - 0.01;
@@ -319,7 +328,7 @@ function draw() {
     updateStars();
     drawText();
 
-    if (frameNumber < 99999) {
+    if (frameNumber < 99999 && hasStarted)  {
         frameNumber++;
     }
     window.requestAnimationFrame(draw);
