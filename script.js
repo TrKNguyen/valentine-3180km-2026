@@ -6,14 +6,23 @@ var hasStarted = false;
 var music = document.getElementById("bgMusic");
 music.volume = 0.5;
 
-// Add this:
 var startButton = document.getElementById("startButton");
+startButton.disabled = true; 
+
+music.addEventListener('canplaythrough', function() {
+    startButton.textContent = "Valenbell ❤️";
+    startButton.disabled = false;
+    startButton.style.opacity = "1";
+});
+
 startButton.addEventListener("click", () => {
     music.play();
     frameNumber = 500;
     hasStarted = true;
     startButton.style.display = "none";
 });
+
+
 
 var context = canvas.getContext("2d");
 var stars = 500;
